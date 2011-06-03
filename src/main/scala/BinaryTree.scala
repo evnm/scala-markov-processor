@@ -38,12 +38,10 @@ object Node {
    * Inserts a list of (leading words, completion word) tuples into an
    * initially-empty Ngram tree.
    */
-  def insertList(list: List[(List[String], String)]): BinaryTree[Ngram] = {
-    list match {
-      case Nil => EmptyNode
-      case (leading_words, completion_word) :: tail =>
-        insert(insertList(tail), leading_words, completion_word)
-    }
+  def insertList(lst: List[(List[String], String)]): BinaryTree[Ngram] = lst match {
+    case Nil => EmptyNode
+    case (leading_words, completion_word) :: tail =>
+      insert(insertList(tail), leading_words, completion_word)
   }
 
 
