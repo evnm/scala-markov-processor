@@ -3,6 +3,9 @@ package com.evnm.markovprocessor
 import org.scalatest.FunSuite
 
 class BinaryTreeSuite extends FunSuite {
+  /*
+   * Test basic Node functionality.
+   */
   test("Node should have passed value") {
     val node = Node(42, EmptyNode, EmptyNode)
     assert(node.value == 42)
@@ -20,6 +23,10 @@ class BinaryTreeSuite extends FunSuite {
     assert(node.right == right)
   }
 
+
+  /*
+   * Test insertion.
+   */
   test("Inserting into an empty tree should yield a single-element tree") {
     val lst = List("foo", "bar")
     val node = Node.insert(EmptyNode, lst, "baz")
@@ -99,11 +106,10 @@ class BinaryTreeSuite extends FunSuite {
 
 
   /*
-   * Tests for stringListCompare.
+   * Test stringListCompare.
    */
   test("stringListCompare should return 0 for equal lists") {
-    assert(Node.stringListCompare(List("foo", "bar", "baz"),
-                                  List("foo", "bar", "baz")) == 0)
+    assert(Node.stringListCompare(List("foo", "bar", "baz"), List("foo", "bar", "baz")) == 0)
   }
 
   test("stringListCompare should return -1 if first list is 'less than' second") {
