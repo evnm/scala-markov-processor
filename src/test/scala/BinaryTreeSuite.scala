@@ -106,6 +106,31 @@ class BinaryTreeSuite extends FunSuite {
 
 
   /*
+   * Test Node.find.
+   */
+  test("Finding a list in an empty tree should return None") {
+    assert(Node.find(List("foo"), EmptyNode) == None)
+  }
+
+  test("Finding a list not present in a tree should return None") {
+    val node = Node(new Ngram(List("foo"), Map("bar" -> 1)), EmptyNode, EmptyNode)
+    val opt = Node.find(List("baz"), node)
+    assert(!opt.isDefined)
+  }
+
+  test("Finding a list present in a tree should return an appropriate ngram option") {
+    val lst = List("foo", "bar")
+    val node = Node(new Ngram(lst, Map("baz" -> 1)), EmptyNode, EmptyNode)
+    val opt = Node.find(lst, node)
+    assert(opt.isDefined)
+    val ngram = opt.get
+    assert(ngram.leading_words == lst)
+    assert(ngram.count == 1)
+    assert(ngram.choices == Map("baz" -> 1))
+  }
+
+
+  /*
    * Test stringListCompare.
    */
   test("stringListCompare should return 0 for equal lists") {

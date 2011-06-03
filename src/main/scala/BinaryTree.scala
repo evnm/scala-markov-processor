@@ -46,6 +46,27 @@ object Node {
 
 
   /*
+   * Finds a given list of leading words within an Ngram tree.
+   */
+  def find(lst: List[String], tree: BinaryTree[Ngram]): Option[Ngram] = {
+    def traverse(node: BinaryTree[Ngram]): Option[Ngram] = {
+      node match {
+        case EmptyNode => None
+        case Node(ngram, left, right) => {
+          stringListCompare(lst, ngram.leading_words) match {
+            case -1 => traverse(left)
+            case 0 => Some(ngram)
+            case 1 => traverse(right)
+          }
+        }
+      }
+    }
+
+    traverse(tree)
+  }
+
+
+  /*
    * Comparator for lists of strings. Assumes lists are of equal length.
    */
   def stringListCompare(list1: List[String], list2: List[String]): Int = {
