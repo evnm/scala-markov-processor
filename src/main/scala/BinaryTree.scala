@@ -79,6 +79,24 @@ object Node {
 
 
   /*
+   * Randomly picks a capitalized set of leading words from a legal ngram tree.
+    */
+  def pickRandom(tree: BinaryTree[Ngram]): List[String] = {
+    tree match {
+      case node: Node[Ngram] => {
+        var lst = List[List[String]]()
+        for (ngram <- node) {
+          if (ngram.leading_words(0)(0).isUpper) lst = ngram.leading_words :: lst
+        }
+        if (lst.isEmpty) return Nil
+        lst(Random.nextInt(lst.length))
+      }
+      case _ => Nil
+    }
+  }
+
+
+  /*
    * Comparator for lists of strings. Assumes lists are of equal length.
    */
   def stringListCompare(list1: List[String], list2: List[String]): Int = {
