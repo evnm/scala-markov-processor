@@ -106,6 +106,19 @@ class BinaryTreeSuite extends FunSuite {
 
 
   /*
+   * Test BinaryTree iterator.
+   */
+  test("BinaryTree.iterator should return an appropriate iterator") {
+    val tree = new Node(1, Node(0, EmptyNode, EmptyNode), Node(2, EmptyNode, EmptyNode))
+    var i = 0
+    tree.foreach(e => {
+      assert(e == i)
+      i += 1
+    })
+  }
+
+
+  /*
    * Test Node.find.
    */
   test("Finding a list in an empty tree should return None") {

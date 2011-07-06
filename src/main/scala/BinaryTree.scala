@@ -1,12 +1,24 @@
 package com.evnm.markovprocessor
 
+import scala.util.Random
+
 sealed abstract class BinaryTree[+T]
 case object EmptyNode extends BinaryTree[Nothing]
 
 case class Node[T](val value: T,
                    val left: BinaryTree[T],
                    val right: BinaryTree[T]
-                 ) extends BinaryTree[T]
+                 ) extends BinaryTree[T] with Iterable[T] {
+  def iterator: Iterator[T] = {
+    def inner(node: BinaryTree[T]): List[T] = {
+      node match {
+        case Node(value, left, right) => inner(left) ::: List(value) ::: inner(right)
+        case _ => Nil
+      }
+    }
+    inner(this).toIterator
+  }
+}
 
 
 /*
