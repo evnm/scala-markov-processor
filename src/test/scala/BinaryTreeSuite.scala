@@ -1,6 +1,8 @@
 package com.evnm.markovprocessor
 
 import org.scalatest.FunSuite
+import scala.io.Source
+import com.evnm.markovprocessor.{MarkovProcessor => MP}
 
 class BinaryTreeSuite extends FunSuite {
   /*
@@ -29,7 +31,7 @@ class BinaryTreeSuite extends FunSuite {
    */
   test("Inserting into an empty tree should yield a single-element tree") {
     val lst = List("foo", "bar")
-    val node = Node.insert(EmptyNode, lst, "baz")
+    val node = Node.insert(lst, "baz", EmptyNode)
     assert(node.value.leading_words == lst)
     assert(node.value.count == 1)
     assert(node.value.choices == Map("baz" -> 1))
@@ -39,8 +41,8 @@ class BinaryTreeSuite extends FunSuite {
 
   test("Inserting the same words twice should increment the appropriate count") {
     val lst = List("foo", "bar")
-    var node = Node.insert(EmptyNode, lst, "baz")
-    node = Node.insert(node, lst, "baz")
+    var node = Node.insert(lst, "baz", EmptyNode)
+    node = Node.insert(lst, "baz", node)
     assert(node.value.leading_words == lst)
     assert(node.value.count == 2)
     assert(node.value.choices == Map("baz" -> 2))
@@ -51,8 +53,8 @@ class BinaryTreeSuite extends FunSuite {
   test("Inserting differing word lists should result in multiple nodes") {
     val lst1 = List("foo", "bar")
     val lst2 = List("what", "the")
-    var node = Node.insert(EmptyNode, lst1, "baz")
-    node = Node.insert(node, lst2, "frak")
+    var node = Node.insert(lst1, "baz", EmptyNode)
+    node = Node.insert(lst2, "frak", node)
     assert(node.value.leading_words == lst1)
     assert(node.value.count == 1)
     assert(node.value.choices == Map("baz" -> 1))
@@ -71,7 +73,7 @@ class BinaryTreeSuite extends FunSuite {
   }
 
   test("Inserting a list should build an appropriate node") {
-    val lst = List((List("foo"), "bar"), (List("bar"), "baz"), (List("baz"), "foo"))
+    val lst = List((List("baz"), "foo"), (List("foo"), "bar"), (List("bar"), "baz"))
     Node.insertList(lst) match {
       case Node(ngram, left, right) => {
         assert(ngram.leading_words == List("baz"))
@@ -104,6 +106,12 @@ class BinaryTreeSuite extends FunSuite {
     }
   }
 
+  /*
+  test("Inserting massive lists should not generate stack overflows") {
+    val words = Source.fromFile("hamlet.txt").mkString.split("( |\n)+").toList
+    Node.insertList(MP.groupWords(4, words))
+  }
+  */
 
   /*
    * Test BinaryTree iterator.
@@ -158,3 +166,4 @@ class BinaryTreeSuite extends FunSuite {
     assert(Node.stringListCompare(List("foo", "vermont"), List("foo", "bar")) == 1)
   }
 }
+
