@@ -49,8 +49,11 @@ object Node {
    */
   def insertList(lst: List[(List[String], String)]): BinaryTree[Ngram] = lst match {
     case Nil => EmptyNode
-    case (leading_words, completion_word) :: tail =>
-      insert(insertList(tail), leading_words, completion_word)
+    case (leading_words, completion_word) :: tail => {
+      var tree = insert(leading_words, completion_word, EmptyNode)
+      for (tup <- tail) tree = insert(tup._1, tup._2, tree)
+      tree
+    }
   }
 
 
