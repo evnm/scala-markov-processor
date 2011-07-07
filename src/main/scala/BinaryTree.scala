@@ -28,21 +28,18 @@ object Node {
   /*
    * Inserts a leading words/completion word combination into a tree of Ngrams.
    */
-  def insert(node: BinaryTree[Ngram], leading_words: List[String],
-             completion_word: String): Node[Ngram] = {
-    node match {
-      case EmptyNode =>
-        Node(new Ngram(leading_words, Map(completion_word -> 1)), EmptyNode, EmptyNode)
-      case Node(value, left, right) =>
-        stringListCompare(leading_words, value.leading_words) match {
-          case -1 =>
-            Node(value, insert(left, leading_words, completion_word), right)
-          case 0 =>
-            Node(value + completion_word, left, right)
-          case 1 => Node(value, left, insert(right, leading_words, completion_word))
-        }
-      case _ => throw new RuntimeException // Should never get here.
-    }
+  def insert(leading_words: List[String], completion_word: String,
+             node: BinaryTree[Ngram]): Node[Ngram] = node match {
+    case EmptyNode =>
+      Node(new Ngram(leading_words, Map(completion_word -> 1)), EmptyNode, EmptyNode)
+    case Node(value, left, right) =>
+      stringListCompare(leading_words, value.leading_words) match {
+        case -1 =>
+          Node(value, insert(leading_words, completion_word, left), right)
+        case 0 =>
+          Node(value + completion_word, left, right)
+        case 1 => Node(value, left, insert(leading_words, completion_word, right))
+      }
   }
 
 
