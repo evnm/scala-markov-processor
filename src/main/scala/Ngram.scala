@@ -5,7 +5,7 @@ import scala.util.Random
 /*
  * An Ngram class.
  */
-class Ngram(val leading_words: List[String], val choices: Map[String, Int]) {
+case class Ngram(val leading_words: List[String], val choices: Map[String, Int]) {
   val count = choices.foldLeft(0) { (acc, kv) => acc + kv._2 }
 
   /*
