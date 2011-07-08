@@ -71,4 +71,11 @@ object MarkovProcessor {
   }
 
 
+  /*
+   * Builds a string of random text of approximately count words with Ngram length n.
+   */
+  def generateText(count: Int, n: Int, corpus: String) = {
+    buildList(count, buildTree(n, corpus)).mkString(" ")
+  }
+
 }
