@@ -87,9 +87,4 @@ class MarkovProcessorSuite extends FunSuite {
     assert(result.get.leading_words == List("foo"))
     assert(result.get.choices == Map("bar" -> 1))
   }
-
-  test("blah") {
-    val words = Source.fromFile("src/test/resources/hamlet.txt").mkString
-    println(MP.buildList(100, MP.buildTree(4, words)).mkString(" "))
-  }
 }
